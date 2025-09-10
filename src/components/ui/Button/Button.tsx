@@ -14,12 +14,12 @@ export const Button = ({
   ...props
 }: ButtonProps) => {
   const baseStyles =
-    'rounded-xl px-6 py-2 font-medium transition-colors duration-200';
+    'rounded-xl px-6 py-3 font-semibold transition-colors duration-200';
 
   const variants = {
-    primary: 'bg-primary text-white hover:bg-primary-dark',
-    secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200',
-    outline: 'border border-gray-300 text-gray-900 hover:bg-gray-100',
+    primary: 'width-69 bg-primary text-white hover:bg-primary-dark',
+    secondary: 'width-39 bg-primary text-white hover:bg-primary-dark',
+    outline: 'border border-primary text-gray-900 hover:bg-primary-dark',
   };
 
   return (

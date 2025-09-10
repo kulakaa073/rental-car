@@ -4,6 +4,7 @@ import { App } from './components/App/App';
 import { BrowserRouter } from 'react-router';
 import { Toaster } from 'react-hot-toast';
 import 'modern-normalize/modern-normalize.css';
+import './styles/index.css';
 import { Provider } from 'react-redux';
 import { store, persistor } from './redux/store';
 

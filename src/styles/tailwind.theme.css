@@ -1,0 +1,21 @@
+@theme {
+  --color-primary: #3470ff;
+  --color-primary-dark: #0b44cd;
+
+  --color-gray-100: #f7f7f7;
+  --color-gray-200: #f2f4f7;
+  --color-gray-300: #dadde1;
+  --color-gray-400: #8e929a;
+  --color-gray-900: #101828;
+
+  --radius-xl: 12px;
+  --radius-2xl: 14px;
+  --radius-3xl: 18.74px;
+
+  --font-family-sans: 'Manrope', sans-serif;
+
+  --spacing-x12: 12px;
+  --spacing-x32: 32px;
+  --spacing-x8: 8px;
+  --spacing-x20: 20px;
+}
