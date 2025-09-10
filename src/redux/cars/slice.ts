@@ -1,11 +1,17 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { Car } from '../../types/car';
-import { fetchCarById, fetchCars, type CarsResponseRaw } from './operations';
+import {
+  fetchCarById,
+  fetchCars,
+  fetchCarBrands,
+  type CarsResponseRaw,
+} from './operations';
 import type { Pagination } from '../../types';
 
 interface CarsState {
   items: Array<Car>;
   pagination: Pagination;
+  brands: Array<string>;
   isLoading: boolean;
   error: string;
 }
@@ -18,6 +24,7 @@ const initialState: CarsState = {
     totalPages: 0,
     limit: 8,
   },
+  brands: [],
   isLoading: false,
   error: '',
 };
@@ -66,7 +73,12 @@ const slice = createSlice({
       .addCase(fetchCarById.fulfilled, (state, action) => {
         state.items.push(action.payload);
       })
-      .addCase(fetchCarById.rejected, handleRejected);
+      .addCase(fetchCarById.rejected, handleRejected)
+      .addCase(fetchCarBrands.pending, handlePending)
+      .addCase(fetchCarBrands.fulfilled, (state, action) => {
+        state.brands.push(...action.payload);
+      })
+      .addCase(fetchCarBrands.rejected, handleRejected);
   },
 });
 

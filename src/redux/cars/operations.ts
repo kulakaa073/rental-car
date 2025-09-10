@@ -46,3 +46,19 @@ export const fetchCarById = createAsyncThunk<
     return thunkAPI.rejectWithValue(String(error));
   }
 });
+
+export const fetchCarBrands = createAsyncThunk<
+  Array<string>,
+  void,
+  { rejectValue: string }
+>('cars/fetchCarBrands', async (_, thunkAPI) => {
+  try {
+    const response = await api.get<Array<string>>('brands');
+    return response;
+  } catch (error) {
+    if (error instanceof Error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+    return thunkAPI.rejectWithValue(String(error));
+  }
+});
