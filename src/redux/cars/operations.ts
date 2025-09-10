@@ -3,16 +3,22 @@ import type { Car } from '../../types/car';
 
 import axios from 'axios';
 import api from '../../utils/axios';
+import type { Pagination } from '../../types';
 
 axios.defaults.baseURL = 'https://car-rental-api.goit.global/';
 
+export interface CarsResponseRaw extends Omit<Pagination, 'page'> {
+  cars: Array<Car>;
+  page: string;
+}
+
 export const fetchCars = createAsyncThunk<
-  Array<Car>,
+  CarsResponseRaw,
   void,
   { rejectValue: string }
 >('cars/fetchCars', async (_, thunkAPI) => {
   try {
-    const response = await api.get<Array<Car>>('cars');
+    const response = await api.get<CarsResponseRaw>('cars');
     return response;
   } catch (error) {
     if (error instanceof Error) {

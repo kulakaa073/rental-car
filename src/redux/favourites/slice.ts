@@ -12,6 +12,7 @@ const slice = createSlice({
   initialState: initialState,
   reducers: {
     addFavourite: (state, action) => {
+      // think about a limit, otherwise it can get silly
       state.items.push(action.payload);
     },
     removeFavourite: (state, action) => {

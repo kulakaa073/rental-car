@@ -1,23 +1,23 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { Car } from '../../types/car';
-import { fetchCarById, fetchCars } from './operations';
+import { fetchCarById, fetchCars, type CarsResponseRaw } from './operations';
+import type { Pagination } from '../../types';
 
 interface CarsState {
   items: Array<Car>;
-  page: number;
-  totalCars: number;
-  totalPages: number;
-  limit: number;
+  pagination: Pagination;
   isLoading: boolean;
   error: string;
 }
 
 const initialState: CarsState = {
   items: [],
-  page: 1,
-  totalCars: 0,
-  totalPages: 0,
-  limit: 12,
+  pagination: {
+    page: 1,
+    totalCars: 0,
+    totalPages: 0,
+    limit: 8,
+  },
   isLoading: false,
   error: '',
 };
@@ -42,11 +42,25 @@ const slice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(fetchCars.pending, handlePending)
-      .addCase(fetchCars.fulfilled, (state, action) => {
-        // TODO: account for actual response schema: cars[], pagination
-        // TODO: add state clearing
-        state.items.push(...action.payload);
-      })
+      .addCase(
+        fetchCars.fulfilled,
+        (state, action: PayloadAction<CarsResponseRaw>) => {
+          const { cars, ...pagination } = action.payload;
+          const page = parseInt(pagination.page);
+
+          state.pagination = {
+            ...state.pagination,
+            ...pagination,
+            page: page,
+          };
+
+          if (page === 1) {
+            state.items = cars;
+          } else {
+            state.items.push(...cars);
+          }
+        }
+      )
       .addCase(fetchCars.rejected, handleRejected)
       .addCase(fetchCarById.pending, handlePending)
       .addCase(fetchCarById.fulfilled, (state, action) => {
