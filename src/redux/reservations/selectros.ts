@@ -4,4 +4,4 @@ export const selectReservations = (state: RootState) =>
   state.reservations.items;
 
 export const selectIsReservations = (state: RootState) =>
-  state.reservations.items ? true : false;
+  Object.keys(state.reservations.items).length === 0 ? false : true;

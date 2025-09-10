@@ -12,7 +12,7 @@
 
 @font-face {
   font-family: 'Manrope';
-  src: url(./Manrope-Medium.woff2) format('woff2');
+  src: url(/fonts/Manrope-Medium.woff2) format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -20,7 +20,7 @@
 
 @font-face {
   font-family: 'Manrope';
-  src: url(./Manrope-SemiBold.woff2) format('woff2');
+  src: url(/fonts/Manrope-SemiBold.woff2) format('woff2');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -28,7 +28,7 @@
 
 @font-face {
   font-family: 'Manrope';
-  src: url(./Manrope-Bold.woff2) format('woff2');
+  src: url(/fonts/Manrope-Bold.woff2) format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -75,16 +75,6 @@ main {
   flex-grow: 1;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p {
-  margin: 0;
-}
-
 ul,
 ol {
   margin: 0;
@@ -100,13 +90,8 @@ img {
 
 a {
   text-decoration: none;
-  color: inherit;
 }
 
 button {
-  border: none;
-  font-family: inherit;
   cursor: pointer;
-  padding: 0;
-  background: none;
 }
