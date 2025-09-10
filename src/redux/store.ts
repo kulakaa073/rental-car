@@ -13,12 +13,22 @@ import {
   REGISTER,
 } from 'redux-persist';
 import { carsReducer } from './cars/slice';
+import { reservationsReducer } from './reservations/slice';
 
-const favouritesPersistConfig = { key: 'favourites', storage };
+const favouritesPersistConfig = {
+  key: 'favourites',
+  storage,
+  whitelist: ['ids'],
+};
+const reservationPersistConfig = { key: 'reservations', storage };
 
 const favouritesPersistReducer = persistReducer(
   favouritesPersistConfig,
   favouritesReducer
+);
+const reservationPersistReducer = persistReducer(
+  reservationPersistConfig,
+  reservationsReducer
 );
 
 export const store = configureStore({
@@ -26,6 +36,7 @@ export const store = configureStore({
     filters: flitersReducer,
     favourites: favouritesPersistReducer,
     cars: carsReducer,
+    reservations: reservationPersistReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({

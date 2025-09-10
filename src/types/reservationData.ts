@@ -1,6 +1,6 @@
 export interface ReservationData {
   name: string;
   email: string;
-  date: Date;
+  reservationDate: number;
   comment: string;
 }

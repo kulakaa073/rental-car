@@ -1,11 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { Car } from '../../types/car';
 
-import axios from 'axios';
 import api from '../../utils/axios';
 import type { Pagination } from '../../types';
-
-axios.defaults.baseURL = 'https://car-rental-api.goit.global/';
+import type { RootState } from '../store';
 
 export interface CarsResponseRaw extends Omit<Pagination, 'page'> {
   cars: Array<Car>;
@@ -18,7 +16,12 @@ export const fetchCars = createAsyncThunk<
   { rejectValue: string }
 >('cars/fetchCars', async (_, thunkAPI) => {
   try {
-    const response = await api.get<CarsResponseRaw>('cars');
+    const state = thunkAPI.getState() as RootState;
+    const filters = state.filters;
+    const { page, limit } = state.cars.pagination;
+    const response = await api.get<CarsResponseRaw>('cars', {
+      params: { filters, page, limit },
+    });
     return response;
   } catch (error) {
     if (error instanceof Error) {
