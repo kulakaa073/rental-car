@@ -1,7 +1,7 @@
 import { formatBigNumbers } from './formatBigNumbers';
 
 export interface FilterOptions {
-  value: number | string;
+  value: string;
   displayValue?: string;
 }
 
@@ -13,7 +13,7 @@ export const generateFilterOptions = (
   return Array.from({ length }, (_, i) => {
     const value = i * mult + add;
     return {
-      value,
+      value: value.toString(),
       displayValue: formatBigNumbers(value, ' '),
     };
   });

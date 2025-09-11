@@ -3,7 +3,7 @@ import type { Car } from '../../types/car';
 
 import api from '../../utils/axios';
 import type { Pagination } from '../../types';
-import type { RootState } from '../store';
+import type { FiltersState } from '../filters/slice';
 
 export interface CarsResponseRaw extends Omit<Pagination, 'page'> {
   cars: Array<Car>;
@@ -12,15 +12,12 @@ export interface CarsResponseRaw extends Omit<Pagination, 'page'> {
 
 export const fetchCars = createAsyncThunk<
   CarsResponseRaw,
-  void,
+  FiltersState & { page: string; limit: string },
   { rejectValue: string }
->('cars/fetchCars', async (_, thunkAPI) => {
+>('cars/fetchCars', async (params, thunkAPI) => {
   try {
-    const state = thunkAPI.getState() as RootState;
-    const filters = state.filters;
-    const { page, limit } = state.cars.pagination;
     const response = await api.get<CarsResponseRaw>('cars', {
-      params: { filters, page, limit },
+      params: params,
     });
     return response;
   } catch (error) {

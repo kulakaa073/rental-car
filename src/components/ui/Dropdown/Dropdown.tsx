@@ -28,14 +28,16 @@ export const Dropdown = ({
 }: DropdownProps) => {
   return (
     <Listbox value={value} onChange={val => onChange(name, val)}>
-      <div className="relative w-48">
-        <ListboxButton className="relative w-full cursor-pointer rounded-xl border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus:ring-2 focus:ring-primary">
-          <span className={'block truncate  text-gray-900'}>
+      <div className="relative w-51 bg-gray-100 rounded-xl">
+        <ListboxButton className="relative w-full cursor-pointer rounded-xl bg-gray-100 py-3 px-4 text-left focus:outline-none">
+          <span
+            className={'block truncate  text-gray-900 font-medium leading-5'}
+          >
             {value ? (extra || '') + value : placeholder}
           </span>
-          <span className="absolute inset-y-0 right-0 flex items-center pr-2">
+          <span className="absolute inset-y-0 right-0 flex items-center pr-3">
             <svg className="h-4 w-4 fill-gray-900">
-              <use href="src/assets/icons.svg#icon-chevron-down" />
+              <use href="/icons.svg#icon-chevron-down" />
             </svg>
           </span>
         </ListboxButton>

@@ -1,11 +1,11 @@
 import React from 'react';
 import clsx from 'clsx';
 
-type ButtonProps = {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'outline';
+  variant?: 'primary' | 'outline';
   className?: string;
-} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+}
 
 export const Button = ({
   children,
@@ -17,8 +17,7 @@ export const Button = ({
     'rounded-xl px-6 py-3 font-semibold transition-colors duration-200 block leading-5';
 
   const variants = {
-    primary: 'w-69 bg-primary text-white hover:bg-primary-dark',
-    secondary: 'w-39 bg-primary text-white hover:bg-primary-dark',
+    primary: ' bg-primary text-white hover:bg-primary-dark',
     outline: 'border border-primary text-gray-900 hover:bg-primary-dark',
   };
 

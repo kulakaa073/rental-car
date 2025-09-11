@@ -1,4 +1,3 @@
-//import { Label } from '@headlessui/react';
 import { Dropdown } from '../ui/Dropdown/Dropdown';
 import { useSelector } from 'react-redux';
 import { selectCarBrands } from '../../redux/cars/selectors';
@@ -10,7 +9,6 @@ import {
   type FiltersState,
 } from '../../redux/filters/slice';
 import { set } from 'lodash';
-import type { DeepPartial } from '../../types';
 import { Button } from '../ui/Button/Button';
 import {
   generateFilterOptions,
@@ -33,32 +31,31 @@ export const Filters = () => {
   const mileageOptions = generateFilterOptions(20, 250);
   const fromOptions = mileageOptions.filter(
     option =>
-      !filters.mileage.to || Number(option.value) <= Number(filters.mileage.to)
+      !filters.maxMileage || Number(option.value) <= Number(filters.maxMileage)
   );
   const toOptions = mileageOptions.filter(
     option =>
-      !filters.mileage.from ||
-      Number(option.value) >= Number(filters.mileage.from)
+      !filters.minMileage || Number(option.value) >= Number(filters.minMileage)
   );
 
   const handleChange = (name: FilterFieldName, value: string) => {
     setFilters(prev => {
-      const update: DeepPartial<FiltersState> = structuredClone(prev);
+      const update = { ...prev };
 
       // Reset invalid mileage values
       if (
-        name === 'mileage.from' &&
-        prev.mileage.to &&
-        Number(value) > Number(prev.mileage.to)
+        name === 'minMileage' &&
+        prev.maxMileage &&
+        Number(value) > Number(prev.maxMileage)
       ) {
-        update.mileage = { ...prev.mileage, from: value, to: '' };
+        update.minMileage = '';
         setMileageError('From cannot be higher than To!');
       } else if (
-        name === 'mileage.to' &&
-        prev.mileage.from &&
-        Number(value) < Number(prev.mileage.from)
+        name === 'maxMileage' &&
+        prev.minMileage &&
+        Number(value) < Number(prev.minMileage)
       ) {
-        update.mileage = { ...prev.mileage, from: '', to: value };
+        update.maxMileage = '';
         setMileageError('To cannot be lower than From!');
       } else {
         setMileageError('');
@@ -76,9 +73,11 @@ export const Filters = () => {
   };
 
   return (
-    <div>
+    <div className="flex gap-16">
       <label>
-        Car brand
+        <span className="block text-xs text-gray-400 leading-4mb-2">
+          Car brand
+        </span>
         <Dropdown
           name="brand"
           options={brandOptions}
@@ -88,37 +87,39 @@ export const Filters = () => {
         />
       </label>
       <label>
-        Price/ 1 hour
+        <span className="block text-xs text-gray-400 mb-2"> Price/ 1 hour</span>
         <Dropdown
-          name="price"
+          name="rentalPrice"
           options={priceOptions}
-          value={filters.price}
+          value={filters.rentalPrice}
           onChange={handleChange}
           placeholder="Choose a price"
           extra="To $"
         />
       </label>
       <label>
-        Car mileage / km
+        <span className="block text-xs text-gray-400 mb-2">
+          Car mileage / km
+        </span>
         <Dropdown
-          name="mileage.from"
+          name="minMileage"
           options={fromOptions}
-          value={filters.mileage.from}
+          value={filters.minMileage}
           onChange={handleChange}
-          placeholder="Choose a price"
+          placeholder="From"
           extra="From "
         />
         <Dropdown
-          name="mileage.to"
+          name="maxMileage"
           options={toOptions}
-          value={filters.mileage.to}
+          value={filters.maxMileage}
           onChange={handleChange}
-          placeholder="Choose a price"
+          placeholder="To"
           extra="To "
         />
         <span>{mileageError}</span>
       </label>
-      <Button variant={'secondary'} onClick={handleClick}>
+      <Button variant={'primary'} onClick={handleClick} className="w-39">
         Search
       </Button>
     </div>

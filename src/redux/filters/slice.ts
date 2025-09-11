@@ -1,21 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { merge } from 'lodash';
 
-export type FilterFieldName = 'brand' | 'price' | 'mileage.from' | 'mileage.to';
+export type FilterFieldName =
+  | 'brand'
+  | 'rentalPrice'
+  | 'minMileage'
+  | 'maxMileage';
 
 export interface FiltersState {
   brand: string;
-  price: string;
-  mileage: {
-    from: string;
-    to: string;
-  };
+  rentalPrice: string;
+  minMileage: string;
+  maxMileage: string;
 }
 
 const initialState: FiltersState = {
   brand: '',
-  price: '',
-  mileage: { from: '', to: '' },
+  rentalPrice: '',
+  minMileage: '',
+  maxMileage: '',
 };
 
 const slice = createSlice({

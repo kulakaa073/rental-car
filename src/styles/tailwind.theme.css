@@ -14,12 +14,6 @@
 
   --font-family-sans: 'Manrope', sans-serif;
 
-  --background-image-hero: url('src/assets/hero_image.jpg');
-
-  --spacing-x12: 12px;
-  --spacing-x32: 32px;
-  --spacing-x8: 8px;
-  --spacing-x20: 20px;
-
   --breakpoint-ds: 90rem;
+  --container-ds: 90rem;
 }

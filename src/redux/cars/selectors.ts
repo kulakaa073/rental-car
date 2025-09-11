@@ -8,3 +8,4 @@ export const selectCarBrands = (state: RootState) => state.cars.brands;
 export const isValidBrand = (state: RootState, brand: string) => {
   return state.cars.brands.includes(brand);
 };
+export const selectIsCarsLoading = (state: RootState) => state.cars.isLoading;

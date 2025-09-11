@@ -54,29 +54,36 @@ const slice = createSlice({
         (state, action: PayloadAction<CarsResponseRaw>) => {
           const { cars, ...pagination } = action.payload;
           const page = parseInt(pagination.page);
-
-          state.pagination = {
-            ...state.pagination,
-            ...pagination,
-            page: page,
-          };
+          if (page != state.pagination.page) {
+            state.pagination = {
+              ...state.pagination,
+              ...pagination,
+              page: page,
+            };
+          }
 
           if (page === 1) {
             state.items = cars;
           } else {
             state.items.push(...cars);
           }
+          state.isLoading = false;
+          state.error = '';
         }
       )
       .addCase(fetchCars.rejected, handleRejected)
       .addCase(fetchCarById.pending, handlePending)
       .addCase(fetchCarById.fulfilled, (state, action) => {
         state.items.push(action.payload);
+        state.isLoading = false;
+        state.error = '';
       })
       .addCase(fetchCarById.rejected, handleRejected)
       .addCase(fetchCarBrands.pending, handlePending)
       .addCase(fetchCarBrands.fulfilled, (state, action) => {
         state.brands.push(...action.payload);
+        state.isLoading = false;
+        state.error = '';
       })
       .addCase(fetchCarBrands.rejected, handleRejected);
   },

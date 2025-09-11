@@ -17,29 +17,31 @@ export const Header = () => {
     );
 
   return (
-    <header className="w-full py-6 px-30 flex justify-between bg-gray-200 border-b border-gray-200 sticky">
-      <NavLink to="/">
-        <svg className="w-26 h-4">
-          <use href="src/assets/icons.svg#logo" />
-        </svg>
-      </NavLink>
-      <div className="flex space-x-8">
-        <NavLink to="/" className={getActiveLinkClass}>
-          Home
+    <header className="w-full bg-gray-200 border-b border-gray-200 sticky">
+      <div className="max-w-ds mx-auto py-6 px-30 flex justify-between">
+        <NavLink to="/">
+          <svg className="w-26 h-4">
+            <use href="/icons.svg#logo" />
+          </svg>
         </NavLink>
-        <NavLink to="/catalog" className={getActiveLinkClass}>
-          Catalog
-        </NavLink>
-        {isFavourites && (
-          <NavLink to="/catalog/favourites" className={getActiveLinkClass}>
-            Favourites
+        <div className="flex space-x-8">
+          <NavLink to="/" className={getActiveLinkClass}>
+            Home
           </NavLink>
-        )}
-        {isReservations && (
-          <NavLink to="/reservations" className={getActiveLinkClass}>
-            Reservations
+          <NavLink to="/catalog" className={getActiveLinkClass}>
+            Catalog
           </NavLink>
-        )}
+          {isFavourites && (
+            <NavLink to="/catalog/favourites" className={getActiveLinkClass}>
+              Favourites
+            </NavLink>
+          )}
+          {isReservations && (
+            <NavLink to="/reservations" className={getActiveLinkClass}>
+              Reservations
+            </NavLink>
+          )}
+        </div>
       </div>
     </header>
   );
