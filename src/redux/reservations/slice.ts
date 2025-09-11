@@ -1,22 +1,25 @@
 import type { ReservationData } from '../../types/reservationData';
-import type { Car } from '../../types/car';
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, nanoid } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 
 interface ReservationsState {
-  items: Record<Car['id'], { data: ReservationData; createdAt: number }>;
+  items: Array<ReservationData>;
 }
 
 const initialState: ReservationsState = {
-  items: {},
+  items: [],
 };
 
 const slice = createSlice({
   name: 'reservations',
   initialState: initialState,
   reducers: {
-    addReservation: (state, action) => {
-      const { carId, ...reservadionData } = action.payload;
-      state.items[carId] = { data: reservadionData, createdAt: Date.now() };
+    addReservation: (state, action: PayloadAction<ReservationData>) => {
+      state.items.push({
+        ...action.payload,
+        reservationDate: action.payload.reservationDate ?? null,
+        id: nanoid(),
+      });
     },
   },
 });

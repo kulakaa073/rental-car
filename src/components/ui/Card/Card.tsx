@@ -1,13 +1,22 @@
 import type { Car } from '../../../types/car';
 import { Button } from '../Button/Button';
+import { FavouriteButton } from '../FavouriteButton/FavouriteButton';
 
 interface CardProps {
-  item: Car;
+  item: Car & { isFavourite: boolean };
+  onFavouriteToggle?: () => void;
+  onReadMore?: () => void;
 }
 
-export const Card = ({ item }: CardProps) => {
+export const Card = ({ item, onFavouriteToggle, onReadMore }: CardProps) => {
   return (
     <div className="rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col">
+      {onFavouriteToggle && (
+        <FavouriteButton
+          isFavourite={item.isFavourite}
+          onToggle={onFavouriteToggle}
+        />
+      )}
       <img
         src={item.img}
         alt={item.model}
@@ -26,9 +35,11 @@ export const Card = ({ item }: CardProps) => {
         <p className="mt-2 font-bold text-gray-900">{item.type}</p>
         <p>{item.mileage}</p>
         <div className="mt-auto pt-4">
-          <Button variant="primary" className="w-full">
-            Read more
-          </Button>
+          {onReadMore && (
+            <Button variant="primary" className="w-full" onClick={onReadMore}>
+              Read more
+            </Button>
+          )}
         </div>
       </div>
     </div>

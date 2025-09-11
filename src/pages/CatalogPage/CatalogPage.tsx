@@ -6,15 +6,20 @@ import type { AppDispatch } from '../../redux/store';
 import { CarList } from '../../components/CarList/CarList';
 import { useSelector } from 'react-redux';
 import {
-  selectCars,
+  selectCarsWithFavourite,
   selectIsCarsLoading,
   selectPagination,
 } from '../../redux/cars/selectors';
 import { selectFilters } from '../../redux/filters/selectors';
+import { useNavigate } from 'react-router';
+import { toggleFavourite } from '../../redux/favourites/slice';
+import { Button } from '../../components/ui/Button/Button';
+import { incrementPage } from '../../redux/cars/slice';
 
 export const CatalogPage = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const cars = useSelector(selectCars);
+  const navigate = useNavigate();
+  const cars = useSelector(selectCarsWithFavourite);
   const isLoading = useSelector(selectIsCarsLoading);
   const filters = useSelector(selectFilters);
   const pagination = useSelector(selectPagination);
@@ -33,13 +38,23 @@ export const CatalogPage = () => {
     dispatch(fetchCarBrands());
   }, [dispatch]);
 
+  const handlePageIncrement = () => {
+    dispatch(incrementPage());
+  };
+
   return (
     <div className="px-30 pt-21 pb-31">
       <Filters />
+      {cars.length > 0 && (
+        <CarList
+          items={cars}
+          onReadMore={id => navigate(`/catalog/${id}`)}
+          onFavouriteToggle={item => dispatch(toggleFavourite(item))}
+        />
+      )}
       {isLoading && <p>Loading cars</p>}
-      {!isLoading && cars.length > 0 && <CarList items={cars} />}
-      {cars.length > 0 && pagination.page !== pagination.totalPages && (
-        <div>Load More</div>
+      {cars.length > 0 && pagination.page < pagination.totalPages && (
+        <Button onClick={handlePageIncrement}>Load More</Button>
       )}
     </div>
   );

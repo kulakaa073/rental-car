@@ -1,6 +1,8 @@
 import type { RootState } from '../store';
+import { createSelector } from '@reduxjs/toolkit';
 
-export const selectFavourites = (state: RootState) => state.favourites.items;
+export const selectFavouritesItems = (state: RootState) =>
+  state.favourites.items;
 
 export const selectIsFavourites = (state: RootState) =>
   state.favourites.ids.length === 0 ? false : true;
@@ -12,3 +14,8 @@ export const selectFavouritesToRefresh = (state: RootState) => {
     return false;
   });
 };
+
+export const selectFavouritesIdSet = createSelector(
+  (state: RootState) => state.favourites.ids,
+  favourites => new Set(favourites)
+);

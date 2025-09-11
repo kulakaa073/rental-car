@@ -45,7 +45,11 @@ const handleRejected = (
 const slice = createSlice({
   name: 'cars',
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    incrementPage: (state: CarsState) => {
+      state.pagination.page += 1;
+    },
+  },
   extraReducers: builder => {
     builder
       .addCase(fetchCars.pending, handlePending)
@@ -90,3 +94,4 @@ const slice = createSlice({
 });
 
 export const carsReducer = slice.reducer;
+export const { incrementPage } = slice.actions;

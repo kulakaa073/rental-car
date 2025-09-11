@@ -1,4 +1,6 @@
 import type { RootState } from '../store';
+import { createSelector } from '@reduxjs/toolkit';
+import { selectFavouritesIdSet } from '../favourites/selectors';
 
 export const selectCars = (state: RootState) => state.cars.items;
 export const selectCarById = (state: RootState, carId: string) =>
@@ -9,3 +11,12 @@ export const isValidBrand = (state: RootState, brand: string) => {
   return state.cars.brands.includes(brand);
 };
 export const selectIsCarsLoading = (state: RootState) => state.cars.isLoading;
+export const selectCarsWithFavourite = createSelector(
+  (state: RootState) => state.cars.items,
+  selectFavouritesIdSet,
+  (cars, favouritesSet) =>
+    cars.map(car => ({
+      ...car,
+      isFavourite: favouritesSet.has(car.id),
+    }))
+);

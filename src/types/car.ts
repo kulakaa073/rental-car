@@ -15,4 +15,5 @@ export interface Car {
   address: string;
   rentalConditions: Array<string>;
   mileage: number;
+  isFavourite?: boolean;
 }

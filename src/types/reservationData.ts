@@ -1,6 +1,8 @@
 export interface ReservationData {
+  id?: string;
   name: string;
   email: string;
-  reservationDate: number;
+  reservationDate: number | null;
   comment: string;
+  carId: string;
 }
