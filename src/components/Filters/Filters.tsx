@@ -12,61 +12,67 @@ import {
 import { set } from 'lodash';
 import type { DeepPartial } from '../../types';
 import { Button } from '../ui/Button/Button';
-import { generateFilterOptions } from '../../utils/generateFilterOptions';
+import {
+  generateFilterOptions,
+  type FilterOptions,
+} from '../../utils/generateFilterOptions';
+import { useState } from 'react';
 
 export const Filters = () => {
   const dispatch = useDispatch();
   const brands = useSelector(selectCarBrands);
-  const filters = useSelector(selectFilters);
-  let mileageError = '';
+  const committedFilters = useSelector(selectFilters);
 
-  const brandOptions = brands.map((brand, i) => {
-    return { value: i, displayValue: brand };
+  const [filters, setFilters] = useState(committedFilters);
+  const [mileageError, setMileageError] = useState('');
+
+  const brandOptions: FilterOptions[] = brands.map(brand => {
+    return { value: brand };
   });
-
   const priceOptions = generateFilterOptions(20, 10, 30);
   const mileageOptions = generateFilterOptions(20, 250);
   const fromOptions = mileageOptions.filter(
-    option => !filters.mileage.to || option.value <= Number(filters.mileage.to)
+    option =>
+      !filters.mileage.to || Number(option.value) <= Number(filters.mileage.to)
   );
-
   const toOptions = mileageOptions.filter(
     option =>
-      !filters.mileage.from || option.value >= Number(filters.mileage.from)
+      !filters.mileage.from ||
+      Number(option.value) >= Number(filters.mileage.from)
   );
 
   const handleChange = (name: FilterFieldName, value: string) => {
-    const update: DeepPartial<FiltersState> = {};
-    if (name === 'brand') {
-      set(update, name, brandOptions[Number(value)].displayValue);
-    } else {
-      set(update, name, value);
-    }
+    setFilters(prev => {
+      const update: DeepPartial<FiltersState> = structuredClone(prev);
 
-    // Reset invalid mileage values
-    if (
-      name === 'mileage.from' &&
-      filters.mileage.to &&
-      Number(value) > Number(filters.mileage.to)
-    ) {
-      set(update, 'mileage.to', '');
-      mileageError = 'From can not be higher than To!';
-    }
-    if (
-      name === 'mileage.to' &&
-      filters.mileage.from &&
-      Number(value) < Number(filters.mileage.from)
-    ) {
-      set(update, 'mileage.from', '');
-      mileageError = 'To can not be lower than From!';
-    }
+      // Reset invalid mileage values
+      if (
+        name === 'mileage.from' &&
+        prev.mileage.to &&
+        Number(value) > Number(prev.mileage.to)
+      ) {
+        update.mileage = { ...prev.mileage, from: value, to: '' };
+        setMileageError('From cannot be higher than To!');
+      } else if (
+        name === 'mileage.to' &&
+        prev.mileage.from &&
+        Number(value) < Number(prev.mileage.from)
+      ) {
+        update.mileage = { ...prev.mileage, from: '', to: value };
+        setMileageError('To cannot be lower than From!');
+      } else {
+        setMileageError('');
+        set(update, name, value);
+      }
 
-    dispatch(setFilter(update));
+      return update as FiltersState;
+    });
   };
 
   const handleClick = () => {
     console.log('Filters | Search button clicked!');
     console.log('Filters | Current filters: ', filters);
+    dispatch(setFilter(filters));
   };
 
   return (
@@ -100,7 +106,7 @@ export const Filters = () => {
           value={filters.mileage.from}
           onChange={handleChange}
           placeholder="Choose a price"
-          extra="From"
+          extra="From "
         />
         <Dropdown
           name="mileage.to"
@@ -108,11 +114,13 @@ export const Filters = () => {
           value={filters.mileage.to}
           onChange={handleChange}
           placeholder="Choose a price"
-          extra="To"
+          extra="To "
         />
         <span>{mileageError}</span>
       </label>
-      <Button onClick={handleClick}>Search</Button>
+      <Button variant={'secondary'} onClick={handleClick}>
+        Search
+      </Button>
     </div>
   );
 };

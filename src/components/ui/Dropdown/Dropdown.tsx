@@ -31,7 +31,7 @@ export const Dropdown = ({
       <div className="relative w-48">
         <ListboxButton className="relative w-full cursor-pointer rounded-xl border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus:ring-2 focus:ring-primary">
           <span className={'block truncate  text-gray-900'}>
-            {value ? extra + value : placeholder}
+            {value ? (extra || '') + value : placeholder}
           </span>
           <span className="absolute inset-y-0 right-0 flex items-center pr-2">
             <svg className="h-4 w-4 fill-gray-900">
@@ -60,7 +60,7 @@ export const Dropdown = ({
                   }`
                 }
               >
-                {option.displayValue}
+                {option.displayValue || option.value}
               </ListboxOption>
             ))}
           </ListboxOptions>

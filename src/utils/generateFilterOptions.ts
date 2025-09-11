@@ -1,8 +1,8 @@
 import { formatBigNumbers } from './formatBigNumbers';
 
 export interface FilterOptions {
-  value: number;
-  displayValue: string;
+  value: number | string;
+  displayValue?: string;
 }
 
 export const generateFilterOptions = (

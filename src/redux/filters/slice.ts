@@ -1,11 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { Brands } from '../../types/brands';
 import { merge } from 'lodash';
 
 export type FilterFieldName = 'brand' | 'price' | 'mileage.from' | 'mileage.to';
 
 export interface FiltersState {
-  brand: Brands | '';
+  brand: string;
   price: string;
   mileage: {
     from: string;

@@ -1,9 +1,7 @@
-import type { Brands } from './brands';
-
 export interface Car {
   id: string;
   year: number;
-  brand: Brands;
+  brand: string;
   model: string;
   type: string;
   img: string;
