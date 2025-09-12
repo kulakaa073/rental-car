@@ -43,7 +43,7 @@ export const CatalogPage = () => {
   };
 
   return (
-    <div className="px-30 pt-21 pb-31">
+    <div className="px-30 pt-21 pb-31 max-w-ds flex items-center flex-col">
       <Filters />
       {cars.length > 0 && (
         <CarList

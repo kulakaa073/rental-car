@@ -19,3 +19,6 @@ export const selectFavouritesIdSet = createSelector(
   (state: RootState) => state.favourites.ids,
   favourites => new Set(favourites)
 );
+
+export const selectIsFavouritesLoading = (state: RootState) =>
+  state.favourites.isLoading;

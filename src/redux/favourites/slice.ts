@@ -5,9 +5,10 @@ import { refreshFavourites } from './operations';
 interface FavouritesState {
   ids: Array<string>;
   items: Record<string, Car>;
+  isLoading: boolean;
 }
 
-const initialState: FavouritesState = { ids: [], items: {} };
+const initialState: FavouritesState = { ids: [], items: {}, isLoading: false };
 
 const slice = createSlice({
   name: 'favourites',
@@ -25,11 +26,22 @@ const slice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(refreshFavourites.fulfilled, (state, action) => {
-      action.payload.forEach(car => {
-        state.items[car.id] = car;
+    builder
+      .addCase(refreshFavourites.pending, (state: FavouritesState) => {
+        state.isLoading = true;
+      })
+      .addCase(
+        refreshFavourites.fulfilled,
+        (state: FavouritesState, action) => {
+          action.payload.forEach(car => {
+            state.items[car.id] = car;
+          });
+          state.isLoading = false;
+        }
+      )
+      .addCase(refreshFavourites.rejected, (state: FavouritesState) => {
+        state.isLoading = false;
       });
-    });
   },
 });
 
