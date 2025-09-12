@@ -35,8 +35,10 @@
 }
 
 #root {
+  position: relative;
   font-family: 'Manrope', sans-serif;
   font-size: 16px;
+  line-height: 1.25;
 }
 
 /* Reset CSS */
@@ -85,7 +87,6 @@ ol {
 img {
   display: block;
   max-width: 100%;
-  height: auto;
 }
 
 a {

@@ -1,4 +1,5 @@
 import type { Car } from '../../../types/car';
+import { shapeAddress } from '../../../utils/shapeAddress';
 import { Button } from '../Button/Button';
 import { FavouriteButton } from '../FavouriteButton/FavouriteButton';
 
@@ -15,39 +16,42 @@ export const Card = ({
   onReadMore,
   className,
 }: CardProps) => {
+  const { city, country } = shapeAddress(item.address);
   return (
     <div className={className}>
-      <div className="rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col">
+      <div className="overflow-hidden flex flex-col relative">
         {onFavouriteToggle && (
           <FavouriteButton
             isFavourite={item.isFavourite}
             onToggle={onFavouriteToggle}
+            className="absolute top-4 right-4"
           />
         )}
         <img
           src={item.img}
           alt={item.model}
-          className="h-48 w-full object-cover"
+          className="rounded-2xl h-67 w-full object-cover"
         />
-        <div className="p-4 flex flex-col flex-grow">
-          <h3 className="font-semibold text-gray-900">
-            {item.model + item.year}
-          </h3>
-          <h3>{item.rentalPrice}</h3>
-          <p>{item.address}</p>
-          <p className="text-gray-400 text-sm">
-            {/*parsed adress to city+country*/}
-            {item.rentalCompany}
-          </p>
-          <p className="mt-2 font-bold text-gray-900">{item.type}</p>
-          <p>{item.mileage}</p>
-          <div className="mt-auto pt-4">
-            {onReadMore && (
-              <Button variant="primary" className="w-full" onClick={onReadMore}>
-                Read more
-              </Button>
-            )}
+        <div className="flex flex-col justify-between h-39">
+          <div className="pr-3 pt-4">
+            <div className="flex justify-between mb-2">
+              <h3 className="font-medium text-gray-900">
+                {`${item.brand} `}
+                <span className="text-primary">{item.model}</span>
+                {`, ${item.year}`}
+              </h3>
+              <p className="font-medium text-gray-900">{`$${item.rentalPrice}`}</p>
+            </div>
+            <p className="text-gray-400-2 text-xs/4 mb-1">{`${city} | ${country} | ${item.rentalCompany}`}</p>
+            <p className="text-gray-400-2 text-xs/4">
+              {`${item.type} | ${item.mileage}`}
+            </p>
           </div>
+          {onReadMore && (
+            <Button variant="primary" className="w-full" onClick={onReadMore}>
+              Read more
+            </Button>
+          )}
         </div>
       </div>
     </div>

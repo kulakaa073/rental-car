@@ -14,11 +14,11 @@ export const Button = ({
   ...props
 }: ButtonProps) => {
   const baseStyles =
-    'rounded-xl px-6 py-3 font-semibold transition-colors duration-200 block leading-5';
+    'rounded-xl px-6 py-3 font-semibold transition-colors duration-200 block leading-5 h-fit';
 
   const variants = {
-    primary: ' bg-primary text-white hover:bg-primary-dark',
-    outline: 'border border-primary text-gray-900 hover:bg-primary-dark',
+    primary: 'bg-primary text-white hover:bg-primary-dark',
+    outline: 'border border-primary text-gray-900 hover:border-primary-dark',
   };
 
   return (

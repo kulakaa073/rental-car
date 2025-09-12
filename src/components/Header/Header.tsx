@@ -17,8 +17,8 @@ export const Header = () => {
     );
 
   return (
-    <header className="w-full bg-gray-200 border-b border-gray-200 sticky">
-      <div className="max-w-ds mx-auto py-6 px-30 flex justify-between">
+    <header className="w-full bg-gray-200 border-b border-gray-200 sticky top-0">
+      <div className="w-ds mx-auto py-6 px-30 flex justify-between">
         <NavLink to="/">
           <svg className="w-26 h-4">
             <use href="/icons.svg#logo" />

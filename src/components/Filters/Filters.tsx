@@ -38,6 +38,8 @@ export const Filters = () => {
       !filters.minMileage || Number(option.value) >= Number(filters.minMileage)
   );
 
+  console.log('filters component|filters:', filters);
+
   const handleChange = (name: FilterFieldName, value: string) => {
     setFilters(prev => {
       const update = { ...prev };
@@ -67,56 +69,60 @@ export const Filters = () => {
   };
 
   const handleClick = () => {
-    console.log('Filters | Search button clicked!');
-    console.log('Filters | Current filters: ', filters);
     dispatch(setFilter(filters));
   };
 
   return (
-    <div className="flex gap-16">
-      <label>
-        <span className="block text-xs text-gray-400 leading-4mb-2">
-          Car brand
-        </span>
+    <div className="flex gap-16 mb-14 items-end">
+      <label className="w-51">
+        <span className="block text-xs/4 text-gray-400 mb-2">Car brand</span>
         <Dropdown
           name="brand"
           options={brandOptions}
           value={filters.brand}
+          variant="regular"
           onChange={handleChange}
           placeholder="Choose a brand"
         />
       </label>
-      <label>
-        <span className="block text-xs text-gray-400 mb-2"> Price/ 1 hour</span>
+      <label className="w-49">
+        <span className="block text-xs/4 text-gray-400 mb-2">
+          Price/ 1 hour
+        </span>
         <Dropdown
           name="rentalPrice"
           options={priceOptions}
           value={filters.rentalPrice}
+          variant="regular"
           onChange={handleChange}
           placeholder="Choose a price"
           extra="To $"
         />
       </label>
-      <label>
-        <span className="block text-xs text-gray-400 mb-2">
+      <label className="w-80">
+        <span className="block text-xs/4 text-gray-400 mb-2">
           Car mileage / km
         </span>
-        <Dropdown
-          name="minMileage"
-          options={fromOptions}
-          value={filters.minMileage}
-          onChange={handleChange}
-          placeholder="From"
-          extra="From "
-        />
-        <Dropdown
-          name="maxMileage"
-          options={toOptions}
-          value={filters.maxMileage}
-          onChange={handleChange}
-          placeholder="To"
-          extra="To "
-        />
+        <div className="flex">
+          <Dropdown
+            name="minMileage"
+            options={fromOptions}
+            value={filters.minMileage}
+            variant="groupLeft"
+            onChange={handleChange}
+            placeholder="From"
+            extra="From "
+          />
+          <Dropdown
+            name="maxMileage"
+            options={toOptions}
+            value={filters.maxMileage}
+            variant="groupRight"
+            onChange={handleChange}
+            placeholder="To"
+            extra="To "
+          />
+        </div>
         <span>{mileageError}</span>
       </label>
       <Button variant={'primary'} onClick={handleClick} className="w-39">

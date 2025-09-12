@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Filters } from '../../components/Filters/Filters';
 import { useDispatch } from 'react-redux';
 import { fetchCarBrands, fetchCars } from '../../redux/cars/operations';
@@ -14,7 +14,7 @@ import { selectFilters } from '../../redux/filters/selectors';
 import { useNavigate } from 'react-router';
 import { toggleFavourite } from '../../redux/favourites/slice';
 import { Button } from '../../components/ui/Button/Button';
-import { incrementPage } from '../../redux/cars/slice';
+import { clearFilters } from '../../redux/filters/slice';
 
 export const CatalogPage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -23,28 +23,40 @@ export const CatalogPage = () => {
   const isLoading = useSelector(selectIsCarsLoading);
   const filters = useSelector(selectFilters);
   const pagination = useSelector(selectPagination);
+  const [page, setPage] = useState(pagination.page);
 
   useEffect(() => {
     dispatch(
       fetchCars({
         ...filters,
-        page: pagination.page.toString(),
-        limit: pagination.limit.toString(),
+        page: page.toString(),
+        limit: '8',
       })
     );
-  }, [dispatch, filters, pagination]);
+  }, [dispatch, filters, page]);
 
   useEffect(() => {
     dispatch(fetchCarBrands());
   }, [dispatch]);
 
   const handlePageIncrement = () => {
-    dispatch(incrementPage());
+    setPage(prev => prev + 1);
   };
 
   return (
-    <div className="px-30 pt-21 pb-31 max-w-ds flex items-center flex-col">
+    <div className="px-30 pt-21 pb-31 w-ds flex items-center flex-col mr-auto ml-auto">
       <Filters />
+      {cars.length === 0 && (
+        <p>
+          Sorry, no cars found. Try to{' '}
+          <span
+            className="underline cursor-pointer"
+            onClick={() => dispatch(clearFilters())}
+          >
+            Reset filters
+          </span>
+        </p>
+      )}
       {cars.length > 0 && (
         <CarList
           items={cars}
@@ -54,7 +66,13 @@ export const CatalogPage = () => {
       )}
       {isLoading && <p>Loading cars</p>}
       {cars.length > 0 && pagination.page < pagination.totalPages && (
-        <Button onClick={handlePageIncrement}>Load More</Button>
+        <Button
+          variant="outline"
+          onClick={handlePageIncrement}
+          className="w-39"
+        >
+          Load More
+        </Button>
       )}
     </div>
   );

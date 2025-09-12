@@ -13,9 +13,10 @@ export const CarList = ({
   onFavouriteToggle,
 }: CarListProps) => {
   return (
-    <div>
+    <div className="grid grid-cols-4 gap-x-8 gap-y-12 mb-20">
       {items.map(item => (
         <Card
+          key={item.id}
           item={item}
           onReadMore={onReadMore ? () => onReadMore(item.id) : undefined}
           onFavouriteToggle={
