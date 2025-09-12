@@ -14,7 +14,7 @@ import {
   generateFilterOptions,
   type FilterOptions,
 } from '../../utils/generateFilterOptions';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export const Filters = () => {
   const dispatch = useDispatch();
@@ -37,8 +37,6 @@ export const Filters = () => {
     option =>
       !filters.minMileage || Number(option.value) >= Number(filters.minMileage)
   );
-
-  console.log('filters component|filters:', filters);
 
   const handleChange = (name: FilterFieldName, value: string) => {
     setFilters(prev => {
@@ -71,6 +69,10 @@ export const Filters = () => {
   const handleClick = () => {
     dispatch(setFilter(filters));
   };
+
+  useEffect(() => {
+    setFilters(committedFilters);
+  }, [committedFilters]);
 
   return (
     <div className="flex gap-16 mb-14 items-end">

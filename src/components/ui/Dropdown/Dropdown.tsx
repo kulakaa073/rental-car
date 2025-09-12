@@ -41,6 +41,11 @@ export const Dropdown = ({
     groupLeft: 'rounded-l-xl border-r border-gray-300',
     groupRight: 'rounded-r-xl',
   };
+
+  const displayValue = Number(value)
+    ? formatBigNumbers(Number(value), ' ')
+    : value;
+
   return (
     <Listbox value={value} onChange={val => onChange(name, val)}>
       <div className={clsx(baseStyles, variants[variant], className)}>
@@ -54,9 +59,7 @@ export const Dropdown = ({
           <span
             className={'block truncate  text-gray-900 font-medium leading-5'}
           >
-            {value
-              ? (extra || '') + formatBigNumbers(Number(value), ' ')
-              : placeholder}
+            {value ? (extra || '') + displayValue : placeholder}
           </span>
           {variant === 'regular' && (
             <span className="absolute inset-y-0 right-0 flex items-center pr-3">
@@ -80,10 +83,10 @@ export const Dropdown = ({
                 className={({ focus, selected }) =>
                   `cursor-pointer select-none py-2 px-4 ${
                     focus
-                      ? 'bg-primary text-white'
+                      ? 'bg-primary text-white font-medium'
                       : selected
-                      ? 'bg-gray-100 font-medium'
-                      : 'text-gray-900'
+                      ? 'text-gray-900 font-medium'
+                      : 'text-gray-400-2 font-medium'
                   }`
                 }
               >
