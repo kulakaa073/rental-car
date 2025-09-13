@@ -6,10 +6,11 @@ import { CarDetailPage } from '../../pages/CarDetailsPage/CarDetailsPage';
 import { FavouritesPage } from '../../pages/FavouritesPage/FavouritesPage';
 import { Suspense } from 'react';
 import { ReservationsPage } from '../../pages/ReservationsPage/ReservationsPage';
+import { Loader } from '../ui/Loader/Loader';
 
 export const App = () => {
   return (
-    <Suspense>
+    <Suspense fallback={<Loader isLoading={true} />}>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />

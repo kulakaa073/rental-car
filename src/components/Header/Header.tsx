@@ -4,8 +4,9 @@ import { selectIsFavourites } from '../../redux/favourites/selectors';
 import { selectIsReservations } from '../../redux/reservations/selectros';
 import clsx from 'clsx';
 import type { NavLinkRenderProps } from 'react-router';
+import { memo } from 'react';
 
-export const Header = () => {
+export const Header = memo(() => {
   const isFavourites = useSelector(selectIsFavourites);
   const isReservations = useSelector(selectIsReservations);
 
@@ -17,7 +18,7 @@ export const Header = () => {
     );
 
   return (
-    <header className="w-full bg-gray-200 border-b border-gray-200 sticky top-0">
+    <header className="w-full bg-gray-200 border-b border-gray-200 sticky top-0 z-10">
       <div className="w-ds mx-auto py-6 px-30 flex justify-between">
         <NavLink to="/">
           <svg className="w-26 h-4">
@@ -45,4 +46,4 @@ export const Header = () => {
       </div>
     </header>
   );
-};
+});

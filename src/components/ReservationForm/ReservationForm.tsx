@@ -2,11 +2,10 @@ import { useId } from 'react';
 import { ErrorMessage, Field, Form, Formik, type FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import { Button } from '../ui/Button/Button';
-import { useField, useFormikContext } from 'formik';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 
-interface ReservationFormProps {
+import { FormikDatePicker } from '../ui/FormikDatePicker/FormikDatePicker';
+
+export interface ReservationFormProps {
   onSubmit: (values: ReservationFormValues) => void;
 }
 
@@ -16,32 +15,6 @@ export interface ReservationFormValues {
   reservationDate: Date | null;
   comment: string;
 }
-
-interface FormikDatePickerProps {
-  name: string;
-  placeholderText?: string;
-  minDate?: Date;
-  dateFormat?: string;
-  className?: string;
-}
-
-export const FormikDatePicker = ({ name, ...props }: FormikDatePickerProps) => {
-  const { setFieldValue } = useFormikContext<ReservationFormValues>();
-  const [field, meta] = useField(name);
-
-  return (
-    <div>
-      <DatePicker
-        selected={field.value ? new Date(field.value) : null}
-        onChange={(date: Date | null) => setFieldValue(name, date)}
-        {...props}
-      />
-      {meta.touched && meta.error ? (
-        <span className="text-red-500 text-sm">{meta.error}</span>
-      ) : null}
-    </div>
-  );
-};
 
 export const ReservationForm = ({ onSubmit }: ReservationFormProps) => {
   const nameFieldId = useId();
@@ -86,53 +59,77 @@ export const ReservationForm = ({ onSubmit }: ReservationFormProps) => {
   });
 
   return (
-    <div>
+    <div className="border border-gray-300 rounded-md p-6">
+      <div className="mb-6">
+        <h3 className="text-xl/6 font-semibold mb-2">Book your car now</h3>
+        <p className="font-medium">
+          Stay connected! We are always ready to help you.
+        </p>
+      </div>
       <Formik<ReservationFormValues>
         initialValues={initialValues}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
         <Form>
-          <div>
-            <Field
-              id={nameFieldId}
-              name="name"
-              placeholder="Name*"
-              className="bg-gray-100"
-            />
-            <ErrorMessage name="name" component="span" />
+          <div className="flex flex-col gap-4 mb-8">
+            <div className="relative">
+              <Field
+                id={nameFieldId}
+                name="name"
+                placeholder="Name*"
+                className="bg-gray-100 rounded-xl w-full px-5 py-3"
+              />
+              <ErrorMessage
+                name="name"
+                component="span"
+                className="absolute top-3 right-3 text-red-500"
+              />
+            </div>
+            <div className="relative">
+              <Field
+                id={emailFieldId}
+                name="email"
+                placeholder="Email*"
+                className="bg-gray-100 rounded-xl w-full px-5 py-3"
+              />
+              <ErrorMessage
+                name="email"
+                component="span"
+                className="absolute top-3 right-3 text-red-500"
+              />
+            </div>
+            <div className="relative">
+              <FormikDatePicker
+                name="reservationDate"
+                placeholderText="Select reservation date"
+                minDate={new Date()}
+                dateFormat="yyyy-MM-dd"
+                className="bg-gray-100 rounded-xl w-full px-5 py-3"
+              />
+              <ErrorMessage
+                name="reservationDate"
+                component="span"
+                className="absolute top-3 right-3 text-red-500"
+              />
+            </div>
+            <div className="relative">
+              <Field
+                id={commentFieldId}
+                as="textarea"
+                rows={3}
+                name="comment"
+                placeholder="Comment"
+                className="bg-gray-100 rounded-xl w-full px-5 py-3 h-22 resize-none"
+              />
+              <ErrorMessage
+                name="comment"
+                component="span"
+                className="absolute top-3 right-3 text-red-500"
+              />
+            </div>
           </div>
-          <div>
-            <Field
-              id={emailFieldId}
-              name="email"
-              placeholder="Email*"
-              className="bg-gray-100"
-            />
-            <ErrorMessage name="email" component="span" />
-          </div>
-          <div>
-            <FormikDatePicker
-              name="reservationDate"
-              placeholderText="Select reservation date"
-              minDate={new Date()}
-              dateFormat="yyyy-MM-dd"
-              className="bg-gray-100"
-            />
-            <ErrorMessage name="reservationDate" component="span" />
-          </div>
-          <div>
-            <Field
-              id={commentFieldId}
-              as="textarea"
-              rows={3}
-              name="comment"
-              placeholder="Comment"
-              className="bg-gray-100"
-            />
-            <ErrorMessage name="comment" component="span" />
-          </div>
-          <div>
+          <div className="flex justify-center">
             <Button type="submit">Send</Button>
           </div>
         </Form>

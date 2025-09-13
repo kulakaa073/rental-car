@@ -48,54 +48,62 @@ export const Dropdown = ({
 
   return (
     <Listbox value={value} onChange={val => onChange(name, val)}>
-      <div className={clsx(baseStyles, variants[variant], className)}>
-        <ListboxButton
-          className={clsx(
-            baseButtonStyles,
-            variants[variant],
-            variant !== 'regular' && 'px-6'
-          )}
-        >
-          <span
-            className={'block truncate  text-gray-900 font-medium leading-5'}
+      {({ open }) => (
+        <div className={clsx(baseStyles, variants[variant], className)}>
+          <ListboxButton
+            className={clsx(
+              baseButtonStyles,
+              variants[variant],
+              variant !== 'regular' && 'px-6'
+            )}
           >
-            {value ? (extra || '') + displayValue : placeholder}
-          </span>
-          {variant === 'regular' && (
-            <span className="absolute inset-y-0 right-0 flex items-center pr-3">
-              <svg className="h-4 w-4 fill-gray-900">
-                <use href="/icons.svg#icon-chevron-down" />
-              </svg>
+            <span
+              className={'block truncate  text-gray-900 font-medium leading-5'}
+            >
+              {value ? (extra || '') + displayValue : placeholder}
             </span>
-          )}
-        </ListboxButton>
-        <Transition
-          as={Fragment}
-          leave="transition ease-in duration-100"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <ListboxOptions className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-xl border border-gray-200 bg-white py-1 shadow-lg">
-            {options.map((option, index) => (
-              <ListboxOption
-                key={index}
-                value={option.value}
-                className={({ focus, selected }) =>
-                  `cursor-pointer select-none py-2 px-4 ${
-                    focus
-                      ? 'bg-primary text-white font-medium'
-                      : selected
-                      ? 'text-gray-900 font-medium'
-                      : 'text-gray-400-2 font-medium'
-                  }`
-                }
-              >
-                {option.displayValue || option.value}
-              </ListboxOption>
-            ))}
-          </ListboxOptions>
-        </Transition>
-      </div>
+            {variant === 'regular' && (
+              <span className="absolute inset-y-0 right-0 flex items-center pr-3">
+                <div
+                  className={clsx('transition-transform duration-200', {
+                    '-scale-100': open,
+                  })}
+                >
+                  <svg className="h-4 w-4 fill-gray-900">
+                    <use href="/icons.svg#icon-chevron-down" />
+                  </svg>
+                </div>
+              </span>
+            )}
+          </ListboxButton>
+          <Transition
+            as={Fragment}
+            leave="transition ease-in duration-100"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <ListboxOptions className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-xl border border-gray-200 bg-white py-1 shadow-lg">
+              {options.map((option, index) => (
+                <ListboxOption
+                  key={index}
+                  value={option.value}
+                  className={({ focus, selected }) =>
+                    `cursor-pointer select-none py-2 px-4 ${
+                      focus
+                        ? 'bg-primary text-white font-medium'
+                        : selected
+                        ? 'text-gray-900 font-medium'
+                        : 'text-gray-400-2 font-medium'
+                    }`
+                  }
+                >
+                  {option.displayValue || option.value}
+                </ListboxOption>
+              ))}
+            </ListboxOptions>
+          </Transition>
+        </div>
+      )}
     </Listbox>
   );
 };

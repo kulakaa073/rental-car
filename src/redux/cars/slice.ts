@@ -7,17 +7,21 @@ import {
   type CarsResponseRaw,
 } from './operations';
 import type { Pagination } from '../../types';
+import { clearFilters, setFilter } from '../filters/slice';
 
 interface CarsState {
   items: Array<Car>;
+  currentItem?: Car | undefined;
   pagination: Pagination;
   brands: Array<string>;
   isLoading: boolean;
   error: string;
+  fetched: boolean;
 }
 
 const initialState: CarsState = {
   items: [],
+  currentItem: undefined,
   pagination: {
     page: 1,
     totalCars: 0,
@@ -27,6 +31,7 @@ const initialState: CarsState = {
   brands: [],
   isLoading: false,
   error: '',
+  fetched: false,
 };
 
 const handlePending = (state: CarsState) => {
@@ -45,7 +50,17 @@ const handleRejected = (
 const slice = createSlice({
   name: 'cars',
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    setPage: (state, action) => {
+      if (state.pagination.page !== action.payload) {
+        state.pagination.page = action.payload;
+      }
+      state.fetched = false;
+    },
+    resetFetched: state => {
+      state.fetched = false;
+    },
+  },
   extraReducers: builder => {
     builder
       .addCase(fetchCars.pending, handlePending)
@@ -53,13 +68,22 @@ const slice = createSlice({
         fetchCars.fulfilled,
         (state, action: PayloadAction<CarsResponseRaw>) => {
           const { cars, ...pagination } = action.payload;
-          const page = parseInt(pagination.page);
+          const page = Number(pagination.page);
 
-          state.pagination = {
+          const newPagination = {
             ...state.pagination,
             ...pagination,
-            page: page,
+            page,
           };
+
+          if (
+            newPagination.page !== state.pagination.page ||
+            newPagination.totalPages !== state.pagination.totalPages ||
+            newPagination.totalCars !== state.pagination.totalCars ||
+            newPagination.limit !== state.pagination.limit
+          ) {
+            state.pagination = newPagination;
+          }
 
           if (page === 1) {
             state.items = cars;
@@ -68,12 +92,13 @@ const slice = createSlice({
           }
           state.isLoading = false;
           state.error = '';
+          state.fetched = true;
         }
       )
       .addCase(fetchCars.rejected, handleRejected)
       .addCase(fetchCarById.pending, handlePending)
-      .addCase(fetchCarById.fulfilled, (state, action) => {
-        state.items.push(action.payload);
+      .addCase(fetchCarById.fulfilled, (state, action: PayloadAction<Car>) => {
+        state.currentItem = action.payload;
         state.isLoading = false;
         state.error = '';
       })
@@ -84,8 +109,17 @@ const slice = createSlice({
         state.isLoading = false;
         state.error = '';
       })
-      .addCase(fetchCarBrands.rejected, handleRejected);
+      .addCase(fetchCarBrands.rejected, handleRejected)
+      .addCase(setFilter, state => {
+        state.pagination.page = 1;
+        state.fetched = false;
+      })
+      .addCase(clearFilters, state => {
+        state.pagination = { ...initialState.pagination };
+        state.fetched = false;
+      });
   },
 });
 
 export const carsReducer = slice.reducer;
+export const { setPage, resetFetched } = slice.actions;

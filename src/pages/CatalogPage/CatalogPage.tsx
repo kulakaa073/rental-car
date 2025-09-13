@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, memo } from 'react';
 import { Filters } from '../../components/Filters/Filters';
 import { useDispatch } from 'react-redux';
 import { fetchCarBrands, fetchCars } from '../../redux/cars/operations';
@@ -8,6 +8,8 @@ import { useSelector } from 'react-redux';
 import {
   selectCarsWithFavourite,
   selectIsCarsLoading,
+  selectIsFetched,
+  selectPage,
   selectPagination,
 } from '../../redux/cars/selectors';
 import { selectFilters } from '../../redux/filters/selectors';
@@ -15,32 +17,31 @@ import { useNavigate } from 'react-router';
 import { toggleFavourite } from '../../redux/favourites/slice';
 import { Button } from '../../components/ui/Button/Button';
 import { clearFilters } from '../../redux/filters/slice';
+import { setPage } from '../../redux/cars/slice';
+import { Loader } from '../../components/ui/Loader/Loader';
 
-export const CatalogPage = () => {
+export const CatalogPage = memo(() => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const cars = useSelector(selectCarsWithFavourite);
   const isLoading = useSelector(selectIsCarsLoading);
   const filters = useSelector(selectFilters);
   const pagination = useSelector(selectPagination);
-  const [page, setPage] = useState(pagination.page);
+  const page = useSelector(selectPage);
+  const fetched = useSelector(selectIsFetched);
 
   useEffect(() => {
-    dispatch(
-      fetchCars({
-        ...filters,
-        page: page.toString(),
-        limit: '8',
-      })
-    );
-  }, [dispatch, filters, page]);
+    if (cars.length === 0 || !fetched) {
+      dispatch(fetchCars({ ...filters, page: page.toString(), limit: '8' }));
+    }
+  }, [dispatch, filters, page, fetched, cars.length]);
 
   useEffect(() => {
     dispatch(fetchCarBrands());
   }, [dispatch]);
 
   const handlePageIncrement = () => {
-    setPage(prev => prev + 1);
+    dispatch(setPage(page + 1));
   };
 
   return (
@@ -64,7 +65,7 @@ export const CatalogPage = () => {
           onFavouriteToggle={item => dispatch(toggleFavourite(item))}
         />
       )}
-      {isLoading && <p>Loading cars</p>}
+      <Loader isLoading={isLoading} />
       {cars.length > 0 && pagination.page < pagination.totalPages && (
         <Button
           variant="outline"
@@ -76,4 +77,4 @@ export const CatalogPage = () => {
       )}
     </div>
   );
-};
+});

@@ -14,9 +14,9 @@ import {
   generateFilterOptions,
   type FilterOptions,
 } from '../../utils/generateFilterOptions';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 
-export const Filters = () => {
+export const Filters = memo(() => {
   const dispatch = useDispatch();
   const brands = useSelector(selectCarBrands);
   const committedFilters = useSelector(selectFilters);
@@ -132,4 +132,4 @@ export const Filters = () => {
       </Button>
     </div>
   );
-};
+});
