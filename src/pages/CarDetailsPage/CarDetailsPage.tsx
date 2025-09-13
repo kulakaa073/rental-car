@@ -6,7 +6,7 @@ import {
 } from '../../redux/cars/selectors';
 import { useParams } from 'react-router';
 import { fetchCarById } from '../../redux/cars/operations';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import type { RootState, AppDispatch } from '../../redux/store';
 import { addReservation } from '../../redux/reservations/slice';
 import {
@@ -18,9 +18,11 @@ import { formatBigNumbers } from '../../utils/formatBigNumbers';
 import { nanoid } from '@reduxjs/toolkit';
 import { GridLoader } from 'react-spinners';
 import { Tooltip } from 'react-tooltip';
+import { ConfirmDialog } from '../../components/ui/ConfirmDialog/ConfirmDialog';
 
 export const CarDetailPage = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { carId } = useParams();
   const carData = useSelector((state: RootState) =>
     carId
@@ -53,6 +55,8 @@ export const CarDetailPage = () => {
           : null,
       })
     );
+
+    setIsDialogOpen(true);
   };
 
   if (!carId) {
@@ -68,7 +72,7 @@ export const CarDetailPage = () => {
   }
 
   return (
-    <div className="px-30 pt-21 pb-31 w-ds flex mr-auto ml-auto h-full">
+    <div className="px-30 pt-21 pb-31 w-ds flex mr-auto ml-auto h-full relative">
       <div className="flex flex-col mr-18 w-160 min-w-160">
         <img
           src={carData.img}
@@ -77,7 +81,7 @@ export const CarDetailPage = () => {
         />
         <ReservationForm onSubmit={handleSubmit} />
       </div>
-      <div className="flex flex-col justify-between h-full min-h-full">
+      <div className="flex flex-col justify-between h-full max-h-256">
         <div className="mb-8">
           <div className="flex gap-4 items-baseline mb-2 mt-5">
             <h2 className="text-2xl/8 font-semibold">{`${carData.brand} ${carData.model}, ${carData.year}`}</h2>
@@ -172,6 +176,10 @@ export const CarDetailPage = () => {
           </ul>
         </div>
       </div>
+      <ConfirmDialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+      />
     </div>
   );
 };
