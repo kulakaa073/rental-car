@@ -29,7 +29,7 @@ export const FavouritesPage = () => {
   }, [dispatch, missingFavIds]);
 
   return (
-    <div>
+    <div className="px-30 pt-21 pb-31 w-ds flex items-center flex-col mr-auto ml-auto">
       {cars.length > 0 && (
         <CarList
           items={cars}

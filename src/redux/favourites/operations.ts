@@ -11,6 +11,7 @@ export const refreshFavourites = createAsyncThunk<
     const responses = await Promise.all(
       ids.map(id => api.get<Car>(`cars/${id}`))
     );
+    console.log('fav thunk | responses: ', responses);
     return responses;
   } catch (error) {
     if (error instanceof Error) {
