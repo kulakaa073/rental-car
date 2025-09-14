@@ -20,7 +20,7 @@ import { GridLoader } from 'react-spinners';
 import { Tooltip } from 'react-tooltip';
 import { ConfirmDialog } from '../../components/ui/ConfirmDialog/ConfirmDialog';
 
-export const CarDetailPage = () => {
+export const CarDetailsPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { carId } = useParams();
@@ -183,3 +183,5 @@ export const CarDetailPage = () => {
     </div>
   );
 };
+
+export default CarDetailsPage;

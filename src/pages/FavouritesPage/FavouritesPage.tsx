@@ -41,3 +41,5 @@ export const FavouritesPage = () => {
     </div>
   );
 };
+
+export default FavouritesPage;

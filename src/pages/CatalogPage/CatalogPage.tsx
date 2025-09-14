@@ -78,3 +78,5 @@ export const CatalogPage = memo(() => {
     </div>
   );
 });
+
+export default CatalogPage;
