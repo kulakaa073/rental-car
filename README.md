@@ -17,3 +17,5 @@ will find a new page, where you can see all your marked cars, so you wont ever
 lose them!
 
 And when you place your reservation, you can see them on "Reservations" page
+
+App is make by Shade, for more info, hit me up in the issues or on my LinkedIn
