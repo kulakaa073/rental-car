@@ -10,6 +10,7 @@ import type { FilterFieldName } from '../../../redux/filters/slice';
 import type { FilterOptions } from '../../../utils/generateFilterOptions';
 import clsx from 'clsx';
 import { formatBigNumbers } from '../../../utils/formatBigNumbers';
+import { ScrollBar } from '../ScrollBar/ScrollBar';
 
 interface DropdownProps {
   name: FilterFieldName;
@@ -82,7 +83,11 @@ export const Dropdown = ({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <ListboxOptions className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-xl border border-gray-200 bg-white py-1 shadow-lg">
+            <ListboxOptions
+              as={ScrollBar}
+              static
+              className="p-1 absolute z-10 mt-1 min-h-60 w-full outline-none rounded-xl border border-gray-200 bg-white py-1 shadow-lg"
+            >
               {options.map((option, index) => (
                 <ListboxOption
                   key={index}

@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { NavLink } from 'react-router';
+import { NavLink, useLocation } from 'react-router';
 import { selectIsFavourites } from '../../redux/favourites/selectors';
 import { selectIsReservations } from '../../redux/reservations/selectros';
 import clsx from 'clsx';
@@ -9,6 +9,7 @@ import { memo } from 'react';
 export const Header = memo(() => {
   const isFavourites = useSelector(selectIsFavourites);
   const isReservations = useSelector(selectIsReservations);
+  const location = useLocation();
 
   const getActiveLinkClass = ({ isActive }: NavLinkRenderProps) =>
     clsx(
@@ -18,7 +19,10 @@ export const Header = memo(() => {
     );
 
   return (
-    <header className="w-full bg-gray-200 border-b border-gray-200 sticky top-0 z-10">
+    <header
+      className={`w-full bg-gray-200 border-b border-gray-200 top-0 z-10
+        ${location.pathname === '/' ? 'absolute' : 'sticky'}`}
+    >
       <div className="w-ds mx-auto py-6 px-30 flex justify-between">
         <NavLink to="/">
           <svg className="w-26 h-4">
