@@ -3,18 +3,15 @@ import { useSelector } from 'react-redux';
 import { selectCarBrands } from '../../redux/cars/selectors';
 import { selectFilters } from '../../redux/filters/selectors';
 import { useDispatch } from 'react-redux';
-import {
-  setFilter,
-  type FilterFieldName,
-  type FiltersState,
-} from '../../redux/filters/slice';
-import { set } from 'lodash';
+import { setFilter, type FilterFieldName } from '../../redux/filters/slice';
+
 import { Button } from '../ui/Button/Button';
 import {
   generateFilterOptions,
   type FilterOptions,
 } from '../../utils/generateFilterOptions';
-import { useState, useEffect, memo } from 'react';
+import { useState, useEffect, memo, useCallback } from 'react';
+import { NumberInput } from '../ui/NumberInput/NumberInput';
 
 export const Filters = memo(() => {
   const dispatch = useDispatch();
@@ -22,49 +19,18 @@ export const Filters = memo(() => {
   const committedFilters = useSelector(selectFilters);
 
   const [filters, setFilters] = useState(committedFilters);
-  const [mileageError, setMileageError] = useState('');
 
   const brandOptions: FilterOptions[] = brands.map(brand => {
     return { value: brand };
   });
   const priceOptions = generateFilterOptions(20, 10, 30);
-  const mileageOptions = generateFilterOptions(20, 250);
-  const fromOptions = mileageOptions.filter(
-    option =>
-      !filters.maxMileage || Number(option.value) <= Number(filters.maxMileage)
-  );
-  const toOptions = mileageOptions.filter(
-    option =>
-      !filters.minMileage || Number(option.value) >= Number(filters.minMileage)
-  );
 
-  const handleChange = (name: FilterFieldName, value: string) => {
-    setFilters(prev => {
-      const update = { ...prev };
-
-      // Reset invalid mileage values
-      if (
-        name === 'minMileage' &&
-        prev.maxMileage &&
-        Number(value) > Number(prev.maxMileage)
-      ) {
-        update.minMileage = '';
-        setMileageError('From cannot be higher than To!');
-      } else if (
-        name === 'maxMileage' &&
-        prev.minMileage &&
-        Number(value) < Number(prev.minMileage)
-      ) {
-        update.maxMileage = '';
-        setMileageError('To cannot be lower than From!');
-      } else {
-        setMileageError('');
-        set(update, name, value);
-      }
-
-      return update as FiltersState;
-    });
-  };
+  const handleChange = useCallback((name: FilterFieldName, value: string) => {
+    setFilters(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+  }, []);
 
   const handleClick = () => {
     dispatch(setFilter(filters));
@@ -106,26 +72,29 @@ export const Filters = memo(() => {
           Car mileage / km
         </span>
         <div className="flex">
-          <Dropdown
+          <NumberInput
             name="minMileage"
-            options={fromOptions}
             value={filters.minMileage}
+            onChange={handleChange}
+            placeholder="From:"
+            maxDigits={5}
+            maxValue={Number(filters.maxMileage) || Infinity}
+            prefix="From: "
             variant="groupLeft"
-            onChange={handleChange}
-            placeholder="From"
-            extra="From "
+            className="placeholder:text-gray-900"
           />
-          <Dropdown
+          <NumberInput
             name="maxMileage"
-            options={toOptions}
             value={filters.maxMileage}
-            variant="groupRight"
             onChange={handleChange}
-            placeholder="To"
-            extra="To "
+            placeholder="To:"
+            maxDigits={5}
+            minValue={Number(filters.minMileage) || 0}
+            prefix="To: "
+            variant="groupRight"
+            className="placeholder:text-gray-900"
           />
         </div>
-        <span>{mileageError}</span>
       </label>
       <Button variant={'primary'} onClick={handleClick} className="w-39">
         Search
