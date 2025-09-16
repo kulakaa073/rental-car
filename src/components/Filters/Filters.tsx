@@ -80,10 +80,10 @@ export const Filters = memo(() => {
             name="minMileage"
             value={filters.minMileage}
             onChange={handleChange}
-            placeholder="From:"
+            placeholder="From"
             maxDigits={5}
             maxValue={Number(filters.maxMileage) || Infinity}
-            prefix="From: "
+            prefix="From "
             variant="groupLeft"
             className="placeholder:text-gray-900 focus:placeholder:text-gray-400-2"
           />
@@ -91,10 +91,10 @@ export const Filters = memo(() => {
             name="maxMileage"
             value={filters.maxMileage}
             onChange={handleChange}
-            placeholder="To:"
+            placeholder="To"
             maxDigits={5}
             minValue={Number(filters.minMileage) || 0}
-            prefix="To: "
+            prefix="To "
             variant="groupRight"
             className="placeholder:text-gray-900 focus:placeholder:text-gray-400-2"
           />
