@@ -78,7 +78,7 @@ export const CarDetailsPage = () => {
         />
         <ReservationForm onSubmit={handleSubmit} />
       </div>
-      <div className="flex flex-col justify-between h-full max-h-256">
+      <div className="flex flex-col justify-between h-256">
         <div className="mb-8">
           <div className="flex gap-4 items-baseline mb-2 mt-5">
             <h2 className="text-2xl/8 font-semibold">{`${carData.brand} ${carData.model}, ${carData.year}`}</h2>
