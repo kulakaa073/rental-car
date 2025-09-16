@@ -104,7 +104,7 @@ export const CarDetailsPage = () => {
             <p className="font-medium">{`Mileage: ${formatBigNumbers(
               carData.mileage,
               ' '
-            )}`}</p>
+            )} km`}</p>
           </div>
           <p className="text-2xl/8 font-semibold text-primary mb-8">{`$${carData.rentalPrice}`}</p>
           <p className="font-medium">{carData.description}</p>

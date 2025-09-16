@@ -22,9 +22,9 @@ export const NumberInput = ({
   value,
   onChange,
   placeholder = 'Enter number',
-  maxDigits = 5,
-  prefix = 'to: ',
-  suffix = ' km',
+  maxDigits,
+  prefix = '',
+  suffix = '',
   minValue,
   maxValue,
   className = '',
@@ -58,7 +58,7 @@ export const NumberInput = ({
       if (!/^\d*$/.test(input)) {
         return false;
       }
-      if (input.length > maxDigits) {
+      if (maxDigits && input.length > maxDigits) {
         return false;
       }
 

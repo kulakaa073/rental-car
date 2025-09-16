@@ -13,17 +13,20 @@ export const CarList = ({
   onFavouriteToggle,
 }: CarListProps) => {
   return (
-    <div className="grid grid-cols-4 gap-x-8 gap-y-12 mb-20">
-      {items.map(item => (
-        <Card
-          key={item.id}
-          item={item}
-          onReadMore={onReadMore ? () => onReadMore(item.id) : undefined}
-          onFavouriteToggle={
-            onFavouriteToggle ? () => onFavouriteToggle(item) : undefined
-          }
-        />
-      ))}
+    <div className="mb-20">
+      <ul className="grid grid-cols-4 gap-x-8 gap-y-12">
+        {items.map(item => (
+          <li key={item.id}>
+            <Card
+              item={item}
+              onReadMore={onReadMore ? () => onReadMore(item.id) : undefined}
+              onFavouriteToggle={
+                onFavouriteToggle ? () => onFavouriteToggle(item) : undefined
+              }
+            />
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

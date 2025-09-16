@@ -3,7 +3,11 @@ import { useSelector } from 'react-redux';
 import { selectCarBrands } from '../../redux/cars/selectors';
 import { selectFilters } from '../../redux/filters/selectors';
 import { useDispatch } from 'react-redux';
-import { setFilter, type FilterFieldName } from '../../redux/filters/slice';
+import {
+  clearFilters,
+  setFilter,
+  type FilterFieldName,
+} from '../../redux/filters/slice';
 
 import { Button } from '../ui/Button/Button';
 import {
@@ -41,7 +45,7 @@ export const Filters = memo(() => {
   }, [committedFilters]);
 
   return (
-    <div className="flex gap-16 mb-14 items-end">
+    <div className="m-w-ds w-full flex justify-between mb-14 items-end">
       <label className="w-51">
         <span className="block text-xs/4 text-gray-400 mb-2">Car brand</span>
         <Dropdown
@@ -81,7 +85,7 @@ export const Filters = memo(() => {
             maxValue={Number(filters.maxMileage) || Infinity}
             prefix="From: "
             variant="groupLeft"
-            className="placeholder:text-gray-900"
+            className="placeholder:text-gray-900 focus:placeholder:text-gray-400-2"
           />
           <NumberInput
             name="maxMileage"
@@ -92,12 +96,27 @@ export const Filters = memo(() => {
             minValue={Number(filters.minMileage) || 0}
             prefix="To: "
             variant="groupRight"
-            className="placeholder:text-gray-900"
+            className="placeholder:text-gray-900 focus:placeholder:text-gray-400-2"
           />
         </div>
       </label>
       <Button variant={'primary'} onClick={handleClick} className="w-39">
         Search
+      </Button>
+      <Button
+        variant={'outline'}
+        onClick={() => {
+          setFilters({
+            brand: '',
+            rentalPrice: '',
+            minMileage: '',
+            maxMileage: '',
+          });
+          dispatch(clearFilters());
+        }}
+        className="w-39"
+      >
+        Reset filters
       </Button>
     </div>
   );

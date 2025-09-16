@@ -1,4 +1,5 @@
 import type { Car } from '../../../types/car';
+import { formatBigNumbers } from '../../../utils/formatBigNumbers';
 import { shapeAddress } from '../../../utils/shapeAddress';
 import { Button } from '../Button/Button';
 import { FavouriteButton } from '../FavouriteButton/FavouriteButton';
@@ -39,9 +40,22 @@ export const Card = memo(
                 </h3>
                 <p className="font-medium text-gray-900">{`$${item.rentalPrice}`}</p>
               </div>
-              <p className="text-gray-400-2 text-xs/4 mb-1">{`${city} | ${country} | ${item.rentalCompany}`}</p>
+              <p className="text-gray-400-2 text-xs/4 mb-1">
+                <span className="pr-1.5 border-r-1 border-r-gray-300">
+                  {city}
+                </span>
+                <span className="px-1.5 border-r-1 border-r-gray-300">
+                  {country}
+                </span>
+                <span className="pl-1.5">{item.rentalCompany}</span>
+              </p>
               <p className="text-gray-400-2 text-xs/4">
-                {`${item.type} | ${item.mileage}`}
+                <span className="pr-1.5 border-r-1 border-r-gray-300">
+                  {item.type}
+                </span>
+                <span className="px-1.5">
+                  {`${formatBigNumbers(item.mileage, ' ')} km`}
+                </span>
               </p>
             </div>
             {onReadMore && (
