@@ -17,7 +17,13 @@ const ReservationsPage = lazy(
 
 export const App = () => {
   return (
-    <Suspense fallback={<Loader isLoading={true} />}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          <Loader isLoading={true} />
+        </div>
+      }
+    >
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
