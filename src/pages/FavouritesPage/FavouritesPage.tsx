@@ -11,6 +11,8 @@ import { useEffect } from 'react';
 import { refreshFavourites } from '../../redux/favourites/operations';
 import { toggleFavourite } from '../../redux/favourites/slice';
 import { CarList } from '../../components/CarList/CarList';
+import { Loader } from '../../components/ui/Loader/Loader';
+
 export const FavouritesPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
@@ -30,14 +32,18 @@ export const FavouritesPage = () => {
 
   return (
     <div className="px-30 pt-21 pb-31 w-ds flex items-center flex-col mr-auto ml-auto">
-      {cars.length > 0 && (
+      {cars.length > 0 && !isLoading && (
         <CarList
           items={cars}
           onReadMore={id => navigate(`/catalog/${id}`)}
           onFavouriteToggle={item => dispatch(toggleFavourite(item))}
         />
       )}
-      {isLoading && <p>Loading cars</p>}
+      {isLoading && (
+        <div className="min-h-screen flex items-center justify-center">
+          <Loader isLoading={true} />
+        </div>
+      )}
     </div>
   );
 };

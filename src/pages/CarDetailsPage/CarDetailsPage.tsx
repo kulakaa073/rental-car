@@ -16,7 +16,7 @@ import {
 import { shapeAddress } from '../../utils/shapeAddress';
 import { formatBigNumbers } from '../../utils/formatBigNumbers';
 import { nanoid } from '@reduxjs/toolkit';
-import { GridLoader } from 'react-spinners';
+import { Loader } from '../../components/ui/Loader/Loader';
 import { Tooltip } from 'react-tooltip';
 import { ConfirmDialog } from '../../components/ui/ConfirmDialog/ConfirmDialog';
 import { NotFound } from '../../components/NotFound/NotFound';
@@ -62,7 +62,11 @@ export const CarDetailsPage = () => {
   }
 
   if (isLoading) {
-    return <GridLoader />;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader isLoading={true} />
+      </div>
+    );
   }
 
   if (!carData) {
