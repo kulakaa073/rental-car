@@ -33,11 +33,11 @@ export const Header = memo(() => {
           <NavLink to="/" className={getActiveLinkClass}>
             Home
           </NavLink>
-          <NavLink to="/catalog" className={getActiveLinkClass}>
+          <NavLink to="/catalog" end className={getActiveLinkClass}>
             Catalog
           </NavLink>
           {isFavourites && (
-            <NavLink to="/catalog/favourites" className={getActiveLinkClass}>
+            <NavLink to="/favourites" className={getActiveLinkClass}>
               Favourites
             </NavLink>
           )}

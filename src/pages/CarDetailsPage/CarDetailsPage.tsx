@@ -19,6 +19,7 @@ import { nanoid } from '@reduxjs/toolkit';
 import { GridLoader } from 'react-spinners';
 import { Tooltip } from 'react-tooltip';
 import { ConfirmDialog } from '../../components/ui/ConfirmDialog/ConfirmDialog';
+import { NotFound } from '../../components/NotFound/NotFound';
 
 export const CarDetailsPage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -57,7 +58,7 @@ export const CarDetailsPage = () => {
   };
 
   if (!carId) {
-    return <div>Car ID not found</div>;
+    return <NotFound />;
   }
 
   if (isLoading) {
@@ -65,7 +66,7 @@ export const CarDetailsPage = () => {
   }
 
   if (!carData) {
-    return <div>Car not found</div>;
+    return <NotFound />;
   }
 
   return (

@@ -66,15 +66,17 @@ export const CatalogPage = memo(() => {
         />
       )}
       <Loader isLoading={isLoading} />
-      {cars.length > 0 && pagination.page < pagination.totalPages && (
-        <Button
-          variant="outline"
-          onClick={handlePageIncrement}
-          className="w-39"
-        >
-          Load More
-        </Button>
-      )}
+      {cars.length > 0 &&
+        pagination.page < pagination.totalPages &&
+        !isLoading && (
+          <Button
+            variant="outline"
+            onClick={handlePageIncrement}
+            className="w-39"
+          >
+            Load More
+          </Button>
+        )}
     </div>
   );
 });
