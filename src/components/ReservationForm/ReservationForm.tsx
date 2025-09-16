@@ -12,7 +12,8 @@ export interface ReservationFormProps {
 export interface ReservationFormValues {
   name: string;
   email: string;
-  reservationDate: Date | null;
+  reservationDateFrom: string | null;
+  reservationDateTo: string | null;
   comment: string;
 }
 
@@ -24,7 +25,8 @@ export const ReservationForm = ({ onSubmit }: ReservationFormProps) => {
   const initialValues = {
     name: '',
     email: '',
-    reservationDate: null,
+    reservationDateFrom: null,
+    reservationDateTo: null,
     comment: '',
   };
 
@@ -47,9 +49,17 @@ export const ReservationForm = ({ onSubmit }: ReservationFormProps) => {
       .trim()
       .email('Invalid email format')
       .required('Email is required'),
-    reservationDate: Yup.date()
+    reservationDateFrom: Yup.date()
       .nullable()
-      .min(new Date(), 'Booking date must be today or later'),
+      .min(new Date(), 'Pick-up date must be today or later')
+      .required('Pick-up date is required'),
+    reservationDateTo: Yup.date()
+      .nullable()
+      .min(
+        Yup.ref('reservationDateFrom'),
+        'Drop-off date must be after pick-up date'
+      )
+      .required('Drop-off date is required'),
     comment: Yup.string()
       .trim()
       .matches(
@@ -101,14 +111,20 @@ export const ReservationForm = ({ onSubmit }: ReservationFormProps) => {
             </div>
             <div className="relative">
               <FormikDatePicker
-                name="reservationDate"
-                placeholderText="Select reservation date"
+                nameFrom="reservationDateFrom"
+                nameTo="reservationDateTo"
+                placeholderText="Pick a rental period"
                 minDate={new Date()}
                 dateFormat="yyyy-MM-dd"
                 className="bg-gray-100 rounded-xl w-full px-5 py-3"
               />
               <ErrorMessage
-                name="reservationDate"
+                name="reservationDateFrom"
+                component="span"
+                className="absolute top-3 right-3 text-red-500"
+              />
+              <ErrorMessage
+                name="reservationDateTo"
                 component="span"
                 className="absolute top-3 right-3 text-red-500"
               />

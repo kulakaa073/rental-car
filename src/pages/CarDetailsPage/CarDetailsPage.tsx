@@ -50,9 +50,6 @@ export const CarDetailsPage = () => {
       addReservation({
         ...values,
         carId,
-        reservationDate: values.reservationDate
-          ? values.reservationDate.getTime()
-          : null,
       })
     );
 

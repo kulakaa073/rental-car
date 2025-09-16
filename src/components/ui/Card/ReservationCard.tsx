@@ -12,15 +12,20 @@ export const ReservationCard = ({
   onReadMore,
   className,
 }: ReservationCardProps) => {
-  let date;
-  if (item.reservationDate) {
-    date = new Date(item.reservationDate).toDateString();
+  const dates: { from: string; to: string } = { from: '', to: '' };
+  if (item.reservationDateFrom) {
+    dates.from = new Date(item.reservationDateFrom).toDateString();
+  }
+  if (item.reservationDateTo) {
+    dates.to = new Date(item.reservationDateTo).toDateString();
   }
   return (
     <>
       <td className={className}>{item.name}</td>
       <td className={className}>{item.email}</td>
-      <td className={className}>{`${date ? date : '-'}`}</td>
+      <td className={className}>{`${
+        dates ? `${dates.from} to ${dates.to}` : '-'
+      } `}</td>
       <td className={className}>{item.comment}</td>
       <td className={className}>{item.carId}</td>
       <td className={className}>

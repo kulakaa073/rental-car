@@ -1,11 +1,13 @@
-import { useField, useFormikContext } from 'formik';
+import { useFormikContext } from 'formik';
 import DatePicker from 'react-datepicker';
 import type { ReservationFormValues } from '../../ReservationForm/ReservationForm';
 import 'react-datepicker/dist/react-datepicker.css';
 import '../../../styles/datePicker.css';
+import { useState } from 'react';
 
 interface FormikDatePickerProps {
-  name: string;
+  nameFrom: keyof ReservationFormValues;
+  nameTo: keyof ReservationFormValues;
   placeholderText?: string;
   minDate?: Date;
   dateFormat?: string;
@@ -59,24 +61,43 @@ const CustomHeader = ({
   </div>
 );
 
-export const FormikDatePicker = ({ name, ...props }: FormikDatePickerProps) => {
-  const { setFieldValue } = useFormikContext<ReservationFormValues>();
-  const [field, meta] = useField(name);
+export const FormikDatePicker = ({
+  nameFrom,
+  nameTo,
+  ...props
+}: FormikDatePickerProps) => {
+  const { setFieldValue, values } = useFormikContext<ReservationFormValues>();
+  const [startDate, setStartDate] = useState<Date | null>(
+    values[nameFrom] ? new Date(values[nameFrom] as string) : null
+  );
+  const [endDate, setEndDate] = useState<Date | null>(
+    values[nameTo] ? new Date(values[nameTo] as string) : null
+  );
+
+  const onChange = (dates: [Date | null, Date | null]) => {
+    const [start, end] = dates;
+    setStartDate(start);
+    setEndDate(end);
+
+    setFieldValue(nameFrom, start ? start.toISOString() : null);
+    setFieldValue(nameTo, end ? end.toISOString() : null);
+  };
 
   return (
     <>
       <DatePicker
-        selected={field.value ? new Date(field.value) : null}
-        onChange={(date: Date | null) => setFieldValue(name, date)}
+        selected={startDate}
         {...props}
         wrapperClassName="block w-full"
-        closeOnScroll={true}
+        closeOnScroll
         formatWeekDay={day => day.substring(0, 3)}
         renderCustomHeader={CustomHeader}
+        onChange={onChange}
+        startDate={startDate}
+        endDate={endDate}
+        selectsRange
+        rangeSeparator=" to "
       />
-      {meta.touched && meta.error ? (
-        <span className="text-red-500 text-sm">{meta.error}</span>
-      ) : null}
     </>
   );
 };

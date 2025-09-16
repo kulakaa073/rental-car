@@ -17,7 +17,6 @@ const slice = createSlice({
     addReservation: (state, action: PayloadAction<ReservationData>) => {
       state.items.push({
         ...action.payload,
-        reservationDate: action.payload.reservationDate ?? null,
         id: nanoid(),
       });
     },
